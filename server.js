@@ -59,6 +59,85 @@ function start() {
 }
 
 function viewAllEmployees() {
-    const query = `
-    `
+    // const query = `
+    // SELECT e.id e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, '', m.last_name) AS manager_name FROM employee e
+    // LEFT JOIN roles r ON e.role_id = r.id
+    // LEFT JOIN departments d ON r.department_id = d.id
+    // LEFT JOIN employee m ON e.manager_id = m.id;
+    // `;
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+    })
+}
+
+function viewAllDepartments() {
+    const query = "SELECt * FROM departments";
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+    });
+}
+
+function viewAllRoles() {
+    // const query = "SELECT roles.title, roles.id, departments.department_name, roles.salary from roles join departments on roles.department_id = departments.id";
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+    })
+}
+
+function addEmployee() {
+    // "SELECT id, title FROM roles"
+    connection.query((error, results) => {
+        if (error) {
+            console.error(error); 
+            return;
+        }
+
+        const roles = results.map (({id, title}) => ({
+            name: title,
+            value: id,
+        }))
+
+        connection.query(
+            // 'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employee',
+            (error, results) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                const manager = results.map(({id, name}) =>({
+                    name,
+                    value: id,
+                }));
+
+                inquirer
+                    .prompt([
+                        {
+                            type: "input",
+                            name: "first_name",
+                            message: "Enter Employees First Name",
+                        },
+                        {
+                            type: "input",
+                            name: "last_name",
+                            message: "Enter Employees Last Name", 
+                        },
+                        {
+                            type: "input",
+                            name: "roleID",
+                            message: "Select Employee's Role",
+                            choices: roles,
+                        },
+                    ])
+                    .then((answers) => {
+                        const sql = "INSERT INTO employee ("
+                    })
+            }
+        )
+    })
 }
