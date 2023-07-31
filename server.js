@@ -129,13 +129,15 @@ function addDepartment() {
   };
 
   function addRole() {
-    const departmentChoices = `SELECT * FROM department`;
-    connection.query(departmentChoices, (err, rows) => {
+    const departmentQuery = `SELECT * FROM department`;
+    connection.query(departmentQuery, (err, rows) => {
       if (err) {
         console.error(err);
         return;
       }
-  
+      console.log(rows)
+      const departmentChoices = rows.map
+
       inquirer
         .prompt([
           {
